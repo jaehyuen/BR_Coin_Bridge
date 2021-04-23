@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brcoin.bridge.service.BrcoinService;
+import com.brcoin.bridge.vo.WalletVo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,11 @@ public class BrcoinController {
 
 	@Operation(summary = "바락코인 지갑 조회", description = "바락코인 지갑을 조회하는 api 입니다.")
 	@GetMapping("/wallet")
-	public ResponseEntity<String> queryWallet(String password) {
+	public ResponseEntity<WalletVo> queryWallet(String walletId) {
 
+		System.out.println(walletId);
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(brcoinService.createWallet(password));
+			.body(brcoinService.queryWallet(walletId));
 
 	}
 

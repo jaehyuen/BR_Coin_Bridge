@@ -1,13 +1,16 @@
 fabric:
   walletPath: wallet
-  connectionConfig: src/main/resources/connection.yaml
+  connectionConfig: ./connection.yaml
   caIpPort: http://192.168.56.127:7054
-  caCertPath: src/main/resources/ca.orgbrcoin.com-cert.pem
+  caCertPath: ./ca.orgbrcoin.com-cert.pem
   caEnrollId: admin
   caEnrollPw: adminpw
   mspId: brcoinMSP
   channelName: brcoin-channel
   chaincodeName: brcoin-cc
+
+server:
+    port: 8081
   
 #batch:
 #
