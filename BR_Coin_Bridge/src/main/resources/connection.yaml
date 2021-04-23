@@ -1,0 +1,157 @@
+name: brcoin
+version: 1.0.0
+client:
+  organization: brcoin
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+
+channels:
+    brcoin-channel:
+        orderers:
+          - orderer0.orgorderer.com
+          - orderer1.orgorderer.com
+          - orderer2.orgorderer.com
+        peers:
+            peer0.orgbrcoin.com:
+              endorsingPeer: true
+              chaincodeQuery: true
+              ledgerQuery: true
+              eventSource: true
+            peer1.orgbrcoin.com:
+              endorsingPeer: true
+              chaincodeQuery: true
+              ledgerQuery: true
+              eventSource: true
+                    
+organizations:
+  brcoin:
+    mspid: brcoinMSP
+    peers:
+      - peer0.orgbrcoin.com
+      - peer1.orgbrcoin.com
+    certificateAuthorities:
+      - ca.orgbrcoin.com
+
+orderers:
+   orderer0.orgorderer.com:
+      name: orderer0.orgorderer.com
+      url: grpcs://192.168.56.127:7050
+      tlsCACerts: 
+          pem: |
+            -----BEGIN CERTIFICATE-----
+            MIICGjCCAcGgAwIBAgIUVcKsDKhVYfZGc6FyHkN58ux4WKQwCgYIKoZIzj0EAwIw
+            aTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+            EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdv
+            cmRlcmVyLmNvbTAgFw0yMTA0MjEwNjEwMDBaGA8yMTIxMDQyMjA2MTAwMFowaTEL
+            MAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtI
+            eXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdvcmRl
+            cmVyLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABL0xi9FjeEzZZbEuKwhH
+            hyZaxqWaxDr0HsX+0z4UtV9VWVX7hRVm37JJlwOeDD/Ve0W8gTH0qMaPyFO9BKRt
+            jD+jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0GA1Ud
+            DgQWBBTTrs0zupw2GC/Af334N4V5Qzyi0TAKBggqhkjOPQQDAgNHADBEAiA9lqSO
+            hedDRHs3LIRJcNb4ASGyz7oio0MM16W9Bh+SKwIgeGBkCgpeiBNvNc29Hm7eFe7i
+            JJcsBocpxMrT9YGLHAs=
+            -----END CERTIFICATE-----
+      grpcOptions:
+        ssl-target-name-override: orderer0.orgorderer.com
+        hostnameOverride: orderer0.orgorderer.com
+
+   orderer1.orgorderer.com:
+      name: orderer1.orgorderer.com
+      url: grpcs://192.168.56.127:8050
+      tlsCACerts: 
+          pem: |
+            -----BEGIN CERTIFICATE-----
+            MIICGjCCAcGgAwIBAgIUVcKsDKhVYfZGc6FyHkN58ux4WKQwCgYIKoZIzj0EAwIw
+            aTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+            EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdv
+            cmRlcmVyLmNvbTAgFw0yMTA0MjEwNjEwMDBaGA8yMTIxMDQyMjA2MTAwMFowaTEL
+            MAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtI
+            eXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdvcmRl
+            cmVyLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABL0xi9FjeEzZZbEuKwhH
+            hyZaxqWaxDr0HsX+0z4UtV9VWVX7hRVm37JJlwOeDD/Ve0W8gTH0qMaPyFO9BKRt
+            jD+jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0GA1Ud
+            DgQWBBTTrs0zupw2GC/Af334N4V5Qzyi0TAKBggqhkjOPQQDAgNHADBEAiA9lqSO
+            hedDRHs3LIRJcNb4ASGyz7oio0MM16W9Bh+SKwIgeGBkCgpeiBNvNc29Hm7eFe7i
+            JJcsBocpxMrT9YGLHAs=
+            -----END CERTIFICATE-----
+      grpcOptions:
+        ssl-target-name-override: orderer1.orgorderer.com
+        hostnameOverride: orderer1.orgorderer.com
+
+
+   orderer2.orgorderer.com:
+      name: orderer2.orgorderer.com
+      url: grpcs://192.168.56.127:9050
+      tlsCACerts:
+          pem: |
+            -----BEGIN CERTIFICATE-----
+            MIICGjCCAcGgAwIBAgIUVcKsDKhVYfZGc6FyHkN58ux4WKQwCgYIKoZIzj0EAwIw
+            aTELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+            EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdv
+            cmRlcmVyLmNvbTAgFw0yMTA0MjEwNjEwMDBaGA8yMTIxMDQyMjA2MTAwMFowaTEL
+            MAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQKEwtI
+            eXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRowGAYDVQQDExFjYS5vcmdvcmRl
+            cmVyLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABL0xi9FjeEzZZbEuKwhH
+            hyZaxqWaxDr0HsX+0z4UtV9VWVX7hRVm37JJlwOeDD/Ve0W8gTH0qMaPyFO9BKRt
+            jD+jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0GA1Ud
+            DgQWBBTTrs0zupw2GC/Af334N4V5Qzyi0TAKBggqhkjOPQQDAgNHADBEAiA9lqSO
+            hedDRHs3LIRJcNb4ASGyz7oio0MM16W9Bh+SKwIgeGBkCgpeiBNvNc29Hm7eFe7i
+            JJcsBocpxMrT9YGLHAs=
+            -----END CERTIFICATE-----
+      grpcOptions:
+        ssl-target-name-override: orderer2.orgorderer.com
+        hostnameOverride: orderer2.orgorderer.com   
+
+peers:
+  peer0.orgbrcoin.com:
+    url: grpcs://192.168.56.127:7051
+    tlsCACerts:
+        pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICGTCCAb+gAwIBAgIUEv4S0zy9+0tP+L4j4KsK25TjYYIwCgYIKoZIzj0EAwIw
+          aDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+          EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBjYS5vcmdi
+          cmNvaW4uY29tMCAXDTIxMDQyMTA2MTAwMFoYDzIxMjEwNDIyMDYxMDAwWjBoMQsw
+          CQYDVQQGEwJVUzEXMBUGA1UECBMOTm9ydGggQ2Fyb2xpbmExFDASBgNVBAoTC0h5
+          cGVybGVkZ2VyMQ8wDQYDVQQLEwZGYWJyaWMxGTAXBgNVBAMTEGNhLm9yZ2JyY29p
+          bi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARQr8GcZB1GuDc1tMv6mmxT
+          +CrKQA6FYdGyjYNOM5XNHHWm3hXrPeZzCgJfrjf79Ufde5knkFwSnB3vHPuACMlE
+          o0UwQzAOBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4E
+          FgQUuzqFNSzLahx3sbKxfGflSakuhzswCgYIKoZIzj0EAwIDSAAwRQIhAOlsECAU
+          j9m2YNHjK/Flh3OUZhcCeaCjAph8gMj2L52OAiB0tkKDLLNZoTYNR12rzCOGbfOQ
+          AlafP66gQWoyZnLI0g==
+          -----END CERTIFICATE-----
+    grpcOptions:
+      ssl-target-name-override: peer0.orgbrcoin.com
+      hostnameOverride: peer0.orgbrcoin.com
+      grpcMaxSize: 99000000
+  peer1.orgbrcoin.com:
+    url: grpcs://192.168.56.127:8051
+    tlsCACerts:
+        pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICGTCCAb+gAwIBAgIUEv4S0zy9+0tP+L4j4KsK25TjYYIwCgYIKoZIzj0EAwIw
+          aDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+          EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMRkwFwYDVQQDExBjYS5vcmdi
+          cmNvaW4uY29tMCAXDTIxMDQyMTA2MTAwMFoYDzIxMjEwNDIyMDYxMDAwWjBoMQsw
+          CQYDVQQGEwJVUzEXMBUGA1UECBMOTm9ydGggQ2Fyb2xpbmExFDASBgNVBAoTC0h5
+          cGVybGVkZ2VyMQ8wDQYDVQQLEwZGYWJyaWMxGTAXBgNVBAMTEGNhLm9yZ2JyY29p
+          bi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARQr8GcZB1GuDc1tMv6mmxT
+          +CrKQA6FYdGyjYNOM5XNHHWm3hXrPeZzCgJfrjf79Ufde5knkFwSnB3vHPuACMlE
+          o0UwQzAOBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIBATAdBgNVHQ4E
+          FgQUuzqFNSzLahx3sbKxfGflSakuhzswCgYIKoZIzj0EAwIDSAAwRQIhAOlsECAU
+          j9m2YNHjK/Flh3OUZhcCeaCjAph8gMj2L52OAiB0tkKDLLNZoTYNR12rzCOGbfOQ
+          AlafP66gQWoyZnLI0g==
+          -----END CERTIFICATE-----
+    grpcOptions:
+      ssl-target-name-override: peer1.orgbrcoin.com
+      hostnameOverride: peer1.orgbrcoin.com
+      grpcMaxSize: 99000000
+
+certificateAuthorities:
+    ca.orgbrcoin.com:
+        url: http://192.168.56.127:7054
+        caName: ca.orgbrcoin.com
