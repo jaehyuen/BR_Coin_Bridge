@@ -13,6 +13,6 @@ public class TokenVo {
 	private String name;
 	private String information;
 	private String url;
-	private String decimal;
+	private int decimal;
 	private List<ReserveVo> reserve;
 }

@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.brcoin.bridge.client.FabricClient;
 import com.brcoin.bridge.common.ChaincodeFunction;
+import com.brcoin.bridge.vo.TokenVo;
 import com.brcoin.bridge.vo.WalletVo;
+import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class BrcoinService {
 
 	final private FabricClient fabricClient;
+	Gson gson = new Gson();
 
 	public void test() {
 
@@ -33,6 +36,14 @@ public class BrcoinService {
 
 		return fabricClient.invokeFabric(ChaincodeFunction.CREATE_WALLET, password)
 			.replaceAll("\"", "");
+	}
+	
+	public void createToken(TokenVo tokenVo) {
+		
+		System.out.println(tokenVo);
+		System.out.println(gson.toJson(tokenVo));
+		fabricClient.invokeFabric(ChaincodeFunction.CREATE_TOKEN,gson.toJson(tokenVo));
+		
 	}
 
 }
