@@ -79,16 +79,14 @@ public class FabricClient {
 
 		try {
 
-
-			Path                networkConfigPath   = Paths.get(fabricConfig.getConnectionConfig());
-			Path                walletPath          = Paths.get(fabricConfig.getWalletPath());
-			Wallet              wallet              = Wallets.newFileSystemWallet(walletPath);      // 2.2
-			Gateway.Builder     builder             = Gateway.createBuilder();
+			Path            networkConfigPath = Paths.get(fabricConfig.getConnectionConfig());
+			Path            walletPath        = Paths.get(fabricConfig.getWalletPath());
+			Wallet          wallet            = Wallets.newFileSystemWallet(walletPath);      // 2.2
+			Gateway.Builder builder           = Gateway.createBuilder();
 
 			builder.identity(wallet, fabricConfig.getCaEnrollId())
 				.networkConfig(networkConfigPath)
 				.discovery(false);
-
 
 			gateway  = builder.connect();
 			network  = gateway.getNetwork(fabricConfig.getChannelName());
@@ -112,28 +110,18 @@ public class FabricClient {
 		}
 	}
 
-	public <T> T queryFabric(ChaincodeFunction function, String param, Class<T> voClass) {
+	public <T> T queryFabric(ChaincodeFunction function, String param, Class<T> voClass) throws ContractException {
 
 		Transaction tx       = contract.createTransaction(function.getValue());
-		String      result   = null;
-		T           resultVo = null;
-
-		try {
-			result   = new String(tx.evaluate(param));
-
-			resultVo = gson.fromJson(result.replaceAll("\\\\", "")
-				.replaceAll("\"\\[", "\\[")
-				.replaceAll("\\]\"", "\\]"), voClass);
-
-		} catch (ContractException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String      result   = new String(tx.evaluate(param));
+		T           resultVo = gson.fromJson(result.replaceAll("\\\\", "")
+			.replaceAll("\"\\[", "\\[")
+			.replaceAll("\\]\"", "\\]"), voClass);
 
 		return resultVo;
 	}
 
-	public String invokeFabric(ChaincodeFunction function, String param) {
+	public String invokeFabric(ChaincodeFunction function, String param) throws ContractException, TimeoutException, InterruptedException {
 
 		Transaction tx     = contract.createTransaction(function.getValue());
 
@@ -142,20 +130,11 @@ public class FabricClient {
 			result = new String(tx.setEndorsingPeers(peerList.get(0))
 				.submit(param));
 
-		} catch (TimeoutException e1) {
-			try {
-				result = new String(tx.setEndorsingPeers(peerList.get(1))
-					.submit(param));
-			} catch (ContractException | TimeoutException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} catch (TimeoutException e) {
 
-		} catch (ContractException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (InterruptedException e3) {
-			e3.printStackTrace();
+			result = new String(tx.setEndorsingPeers(peerList.get(1))
+				.submit(param));
+
 		}
 		return result;
 	}
