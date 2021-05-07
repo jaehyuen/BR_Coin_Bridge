@@ -1,14 +1,10 @@
 package com.brcoin.bridge.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hyperledger.fabric.gateway.ContractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.brcoin.bridge.client.CryptoClient;
 import com.brcoin.bridge.client.FabricClient;
 import com.brcoin.bridge.common.ChaincodeFunction;
 import com.brcoin.bridge.common.Util;
@@ -25,11 +21,17 @@ import lombok.RequiredArgsConstructor;
 public class BrcoinService {
 
 	final private FabricClient fabricClient;
-	final private CryptoClient cryptoClient;
 	final private Util         util;
 
 	private Logger             logger = LoggerFactory.getLogger(this.getClass());
 	private Gson               gson   = new Gson();
+
+	/**
+	 * 지갑을 조회하는 서비스
+	 * 
+	 * @param walletId 조회할 지갑 주소
+	 * @return ResultVo<WalletVo> 결과 vo(지갑 정보 vo)
+	 */
 
 	public ResultVo<WalletVo> queryWallet(String walletId) {
 
@@ -54,17 +56,23 @@ public class BrcoinService {
 
 	}
 
-	public ResultVo<Map<String, String>> createWallet(String password) {
-		logger.debug("[createWallet] start ");
-		logger.debug("[createWallet] password -> " + password);
+	/**
+	 * 지갑을 생성하는 서비스
+	 * 
+	 * @param publicKey 지갑의 공개키
+	 * 
+	 * @return ResultVo<String> 결과 vo(생성한 지갑 주소)
+	 */
 
-		String              result = null;
-		Map<String, String> keyMap = new HashMap<String, String>();
+	public ResultVo<String> createWallet(String publicKey) {
+		logger.debug("[createWallet] start ");
+		logger.debug("[createWallet] publicKey -> " + publicKey);
+
+		String address = null;
 
 		try {
 
-			keyMap = cryptoClient.generateKeys();
-			result = fabricClient.invokeFabric(ChaincodeFunction.CREATE_WALLET, keyMap.remove("public"))
+			address = fabricClient.invokeFabric(ChaincodeFunction.CREATE_WALLET, publicKey)
 				.replaceAll("\"", "");
 
 		} catch (Exception e) {
@@ -75,11 +83,19 @@ public class BrcoinService {
 		}
 
 		logger.debug("[createWallet] finish ");
-		keyMap.put("address", result);
-		return util.setResult("0000", true, "success create wallet", keyMap);
+
+		return util.setResult("0000", true, "success create wallet", address);
 	}
 
-	public ResultVo<Object> createToken(TokenVo tokenVo) {
+	/**
+	 * 토큰을 생성하는 서비스
+	 * 
+	 * @param tokenVo 생성할 토큰 정보 vo
+	 * 
+	 * @return ResultVo<String> 결과 vo(생성한 토큰 id)
+	 */
+
+	public ResultVo<String> createToken(TokenVo tokenVo) {
 
 		logger.debug("[createToken] start ");
 		logger.debug("[createToken] tokenVo -> " + tokenVo);
@@ -99,7 +115,15 @@ public class BrcoinService {
 
 	}
 
-	public ResultVo<Object> transferToken(TransferVo transferVo) {
+	/**
+	 * 토큰 송금 서비스
+	 * 
+	 * @param transferVo 송금 정보 vo
+	 * 
+	 * @return ResultVo<String> 결과 vo(송금 결과)
+	 */
+	
+	public ResultVo<String> transferToken(TransferVo transferVo) {
 
 		logger.debug("[transferToken] start ");
 		logger.debug("[transferToken] transferVo -> " + transferVo);
