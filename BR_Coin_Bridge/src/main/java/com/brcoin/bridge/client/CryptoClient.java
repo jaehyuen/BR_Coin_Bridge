@@ -90,11 +90,12 @@ public class CryptoClient {
 		String encryptedData = null;
 		try {
 			// 개인키 string을 개인키 객체로 변환
-			PublicKey publicKey = getPublicKey(privKey);
+			
+			PrivateKey privateKey = getPrivateKey(privKey);
 
 			// 만들어진 공개키객체를 기반으로 암호화모드로 설정
 			Cipher    cipher    = Cipher.getInstance("RSA");
-			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 
 			// 평문을 암호화
 			byte[] byteEncryptedData = cipher.doFinal(plainData.getBytes());
@@ -102,7 +103,7 @@ public class CryptoClient {
 				.encodeToString(byteEncryptedData);
 
 		} catch (Exception e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 		}
 		return encryptedData;
 
@@ -112,11 +113,12 @@ public class CryptoClient {
 		String decryptedData = null;
 		try {
 			// 공개키 string을 공개키 객체로 변환
-			PrivateKey privateKey = getPrivateKey(pubKey);
+			
+			PublicKey publicKey = getPublicKey(pubKey);
 
 			// 만들어진 개인키객체를 기반으로 암호화모드로 설정하는 과정
 			Cipher     cipher     = Cipher.getInstance("RSA");
-			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			cipher.init(Cipher.DECRYPT_MODE, publicKey);
 
 			// 암호문을 디코딩
 			byte[] byteEncryptedData = Base64.getDecoder()
@@ -135,9 +137,9 @@ public class CryptoClient {
 		try {
 
 			// key string에 필요없는값 지우기
-			stringPublicKey.replaceAll("\n", "")
-				.replace("-----BEGIN TEST PRIVATE KEY-----", "")
-				.replace("-----END TEST PRIVATE KEY-----", "");
+			stringPublicKey= stringPublicKey.replaceAll("\n", "")
+				.replace("-----BEGIN TEST PUBLIC KEY-----", "")
+				.replace("-----END TEST PUBLIC KEY-----", "");
 
 			// 공개키 string을 공개키 객체로 변환
 			KeyFactory         keyFactory    = KeyFactory.getInstance("RSA");
@@ -157,9 +159,9 @@ public class CryptoClient {
 		try {
 
 			// key string에 필요없는값 지우기
-			stringPrivateKey.replaceAll("\n", "")
-				.replace("-----BEGIN TEST PUBLIC KEY-----", "")
-				.replace("-----END TEST PUBLIC KEY-----", "");
+			stringPrivateKey= stringPrivateKey.replaceAll("\n", "")
+				.replace("-----BEGIN TEST PRIVATE KEY-----", "")
+				.replace("-----END TEST PRIVATE KEY-----", "");
 
 			// 개인키 string을 개인키 객체로 변환
 			KeyFactory          keyFactory     = KeyFactory.getInstance("RSA");

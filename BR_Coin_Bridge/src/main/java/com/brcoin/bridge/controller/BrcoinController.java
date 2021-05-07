@@ -36,10 +36,10 @@ public class BrcoinController {
 
 	@Operation(summary = "바락코인 지갑 생성", description = "바락코인 지갑을 생성하는 api 입니다.")
 	@PostMapping("/wallet")
-	public ResponseEntity<ResultVo<Map<String, String>>> createWallet(String password) {
+	public ResponseEntity<ResultVo<Map<String, String>>> createWallet(String publicKey) {
 
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(brcoinService.createWallet(password));
+			.body(brcoinService.createWallet(publicKey));
 
 	}
 
@@ -70,28 +70,28 @@ public class BrcoinController {
 
 	}
 
-//	@PostMapping("/test")
-//	public ResponseEntity<String> test(@RequestBody HashMap<String, String> map) throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
-//
-//		String publicKey = map.get("publicKey");
-////				.replaceAll("^-----.*-----$", "");
-//		System.out.println("publicKey " + publicKey);
-//		String privateKey = map.get("privateKey")
+	@PostMapping("/test")
+	public ResponseEntity<String> test(@RequestBody HashMap<String, String> map) throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
+
+		String publicKey = map.get("publicKey");
+//				.replaceAll("^-----.*-----$", "");
+		System.out.println("publicKey " + publicKey);
+		String privateKey = map.get("privateKey");
 //			.replaceAll("\n", "");
-//		String plainText  = "플레인 텍스트";
-//		System.out.println("평문: " + plainText);
-//		String encryptedText = cryptoClient.testEncode(plainText, publicKey);
-//		System.out.println("암호화: " + encryptedText);
-//		String decryptedText = cryptoClient.testDecode(encryptedText, privateKey);
-//		System.out.println("복호화: " + decryptedText);
-//		String signText = cryptoClient.sign(plainText, privateKey);
-//		System.out.println("서명: " + signText);
-//		boolean result = cryptoClient.verifySignarue(plainText, signText, publicKey);
-//		System.out.println("인증: " + result);
-//
-//		return ResponseEntity.status(HttpStatus.OK)
-//			.body("");
-//
-//	}
+		String plainText  = "플레인 텍스트";
+		System.out.println("평문: " + plainText);
+		String encryptedText = cryptoClient.testEncode(plainText, publicKey);
+		System.out.println("암호화: " + encryptedText);
+		String decryptedText = cryptoClient.testDecode(encryptedText, privateKey);
+		System.out.println("복호화: " + decryptedText);
+		String signText = cryptoClient.sign(plainText, privateKey);
+		System.out.println("서명: " + signText);
+		boolean result = cryptoClient.verifySignarue(plainText, signText, publicKey);
+		System.out.println("인증: " + result);
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body("");
+
+	}
 
 }

@@ -11,6 +11,9 @@ fabric:
 
 server:
     port: 8081
+#logging:
+#  level:
+#    root: debug
   
 #batch:
 #
