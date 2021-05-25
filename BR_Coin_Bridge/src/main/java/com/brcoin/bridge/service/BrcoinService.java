@@ -1,5 +1,9 @@
 package com.brcoin.bridge.service;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hyperledger.fabric.gateway.ContractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,12 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.brcoin.bridge.client.FabricClient;
 import com.brcoin.bridge.common.ChaincodeFunction;
+import com.brcoin.bridge.common.JwtProvider;
 import com.brcoin.bridge.common.Util;
+import com.brcoin.bridge.vo.JwtTokenVo;
 import com.brcoin.bridge.vo.ResultVo;
 import com.brcoin.bridge.vo.TokenVo;
 import com.brcoin.bridge.vo.TransferVo;
 import com.brcoin.bridge.vo.WalletVo;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +29,7 @@ public class BrcoinService {
 
 	final private FabricClient fabricClient;
 	final private Util         util;
+	private final JwtProvider  jwtProvider;
 
 	private Logger             logger = LoggerFactory.getLogger(this.getClass());
 	private Gson               gson   = new Gson();
@@ -122,7 +130,7 @@ public class BrcoinService {
 	 * 
 	 * @return ResultVo<String> 결과 vo(송금 결과)
 	 */
-	
+
 	public ResultVo<String> transferToken(TransferVo transferVo) {
 
 		logger.debug("[transferToken] start ");
@@ -141,6 +149,41 @@ public class BrcoinService {
 		logger.debug("[transferToken] finish ");
 		return util.setResult("0000", true, "success transfer token", null);
 
+	}
+
+	public ResultVo<List<TokenVo>> getAllTokens() {
+
+		List<TokenVo> result = new ArrayList<TokenVo>();
+		try {
+
+			result = fabricClient.queryFabric(ChaincodeFunction.QUERY_ALL_TOKENS, "", new TypeToken<List<TokenVo>>() {
+			}.getType());
+
+		} catch (Exception e) {
+
+			logger.debug("[getToken] error ");
+			return util.setResult("9999", false, e.getMessage(), null);
+		}
+
+		logger.debug("[getToken] finish ");
+		return util.setResult("0000", true, "success getToken ", result);
+	}
+
+	public ResultVo<JwtTokenVo> test(String role) {
+
+		// 정상 로그인시 JWT 토큰 발급
+		String     token      = jwtProvider.generateToken("brwallet", role);
+
+		// 리턴값 생성
+		JwtTokenVo jwtTokenVo = JwtTokenVo.builder()
+			.accessToken(token)
+			.refreshToken("")
+			.expiresAt(Instant.now()
+				.plusMillis(jwtProvider.getJwtExpirationInMillis()))
+			.userId("")
+			.build();
+
+		return util.setResult("0000", true, "Success login", jwtTokenVo);
 	}
 
 }

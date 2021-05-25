@@ -1,5 +1,8 @@
 package com.brcoin.bridge.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,10 +31,10 @@ public class BrcoinController {
 
 	@Operation(summary = "바락코인 지갑 생성", description = "바락코인 지갑을 생성하는 api 입니다.")
 	@PostMapping("/wallet")
-	public ResponseEntity<ResultVo<String>> createWallet(String publicKey) {
+	public ResponseEntity<ResultVo<String>> createWallet(@RequestBody Map<String, String> publicKey) {
 
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(brcoinService.createWallet(publicKey));
+			.body(brcoinService.createWallet(publicKey.get("publicKey")));
 
 	}
 
@@ -54,11 +57,20 @@ public class BrcoinController {
 	}
 
 	@Operation(summary = "바락코인(토큰) 송금", description = "바락코인(토큰)을 송금하는 api 입니다.")
-	@PostMapping("/tranfer")
+	@PostMapping("/transfer")
 	public ResponseEntity<ResultVo<String>> transfer(@RequestBody TransferVo transferVo) {
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(brcoinService.transferToken(transferVo));
+
+	}
+	
+	@Operation(summary = "바락코인(토큰) 조회", description = "바락코인(토큰)을 조회하는 api 입니다.")
+	@GetMapping("/tokens")
+	public ResponseEntity<ResultVo<List<TokenVo>>> getAllTokens() {
+
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(brcoinService.getAllTokens());
 
 	}
 

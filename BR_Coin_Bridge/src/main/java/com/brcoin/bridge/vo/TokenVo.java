@@ -15,6 +15,12 @@ public class TokenVo {
 	private String          url;         // 토큰 관련 url
 	private int             decimal;     // 토큰 소수점 자리수 최대 8
 	private List<ReserveVo> reserve;     // 최초 분배 관련
-	
-	private String signature; //서명 데이터값 (base64 인코딩)
+
+	private int             createDate;
+	private int             tokenId;
+	private String          jobType;
+//	private String[]        jobArgs;
+	private int             jobDate;
+
+	private String          signature;   // 서명 데이터값 (base64 인코딩)
 }

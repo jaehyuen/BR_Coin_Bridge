@@ -1,5 +1,6 @@
 package com.brcoin.bridge.client;
 
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -110,13 +111,17 @@ public class FabricClient {
 		}
 	}
 
-	public <T> T queryFabric(ChaincodeFunction function, String param, Class<T> voClass) throws ContractException {
+	public <T> T queryFabric(ChaincodeFunction function, String param, Type type) throws ContractException {
 
 		Transaction tx       = contract.createTransaction(function.getValue());
 		String      result   = new String(tx.evaluate(param));
+		System.out.println(result);
+		System.out.println(result.replaceAll("\\\\", "")
+				.replaceAll("\"\\[", "\\[")
+				.replaceAll("\\]\"", "\\]"));
 		T           resultVo = gson.fromJson(result.replaceAll("\\\\", "")
 			.replaceAll("\"\\[", "\\[")
-			.replaceAll("\\]\"", "\\]"), voClass);
+			.replaceAll("\\]\"", "\\]"), type);
 
 		return resultVo;
 	}
