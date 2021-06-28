@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/fabric")
 @RequiredArgsConstructor
 public class FabricController {
-	//브랜치 테스트
+	//웹플럭스 테스트
 
 
 }
